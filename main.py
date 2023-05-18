@@ -4,7 +4,7 @@ import argparse
 import r2pipe
 
 
-class Analysis():
+class Analyse():
 
     def __init__(self):
         pass
@@ -19,11 +19,11 @@ class Analysis():
 
         self.args = parser.parse_args()
 
-    def main(self):
+    def run(self):
         '''Execution flow starts here'''
         self.argParser()
 
 
 if __name__ == "__main__":
-    analyse = Analysis()
-    analyse.main()
+    analyse = Analyse()
+    analyse.run()
