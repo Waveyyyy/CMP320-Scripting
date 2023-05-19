@@ -72,7 +72,7 @@ class Analyse():
         url = f'https://www.virustotal.com/api/v3/files/{sample_hash}'
         headers = {'X-ApiKey': self.args.api_key,
                    'accept': 'application/json'}
-        response = requests.get(url, headers)
+        response = requests.get(url, headers=headers)
         file_info = response.text
         # parse data (most likely to use vt api for this)
         # store useful responses somehow
