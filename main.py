@@ -18,12 +18,14 @@ class Analyse():
         parser.add_argument("sample", help="The file to analyse")
         parser.add_argument("-y", "--yes", action='store_true',
                             help="Answer yes to any y/n prompts")
-        parser.add_argument(
-            "--offline", help="Will not use external services")
-        parser.add_argument("-a",
-                            "--algorithm", help="Which hash algorithm to use",
+        parser.add_argument("--offline",
+                            help="Will not use external services")
+        parser.add_argument("-a", "--algorithm",
+                            help="Which hash algorithm to use",
                             choices=["MD5", "SHA1", "SHA224",
                                      "SHA256", "SHA384", "SHA512"])
+        parser.add_argument("-k", "--api-key",
+                            help="Virus Total API key ")
 
         self.args = parser.parse_args()
 
