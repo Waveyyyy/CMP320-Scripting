@@ -65,9 +65,15 @@ class Analyse():
         return algorithm.hexdigest()
 
     def virus_total(self):
+        '''Submits file hash to virus total for analysis'''
         # get sha256 hash of the sample
         sample_hash = self.get_file_hash()
-        # use vt api or bs3/selenium/requests lib to perform this
+        # use vt api to get a file report
+        url = f'https://www.virustotal.com/api/v3/files/{sample_hash}'
+        headers = {'X-ApiKey': self.args.api_key,
+                   'accept': 'application/json'}
+        response = requests.get(url, headers)
+        file_info = response.text
         # parse data (most likely to use vt api for this)
         # store useful responses somehow
         return sample_hash
