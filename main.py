@@ -3,6 +3,7 @@
 import argparse
 import r2pipe
 import hashlib
+import inspect
 
 
 class Analyse():
@@ -41,11 +42,20 @@ class Analyse():
             case "SHA512":
                 algorithm = hashlib.sha256()
 
+        # check if the calling function was virus_total
+        # virus total only accepts MD5,SHA1 or SHA256 hashes
+        if "virus_total".equals(inspect.stack()[1].function):
+            algorithm = hashlib.sha256()
+
+        # read the whole sample into data
+        # if the sample is larger than the system has RAM this may cause issues
         with open(self.args.sample, "rb") as sample:
             data = sample.read()
 
+        # update the hash object with the content read from the sample file
         algorithm.update(data)
 
+        # return the hex representation of the file hash
         return algorithm.hexdigest()
 
     def run(self):
