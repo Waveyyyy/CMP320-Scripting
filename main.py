@@ -60,6 +60,14 @@ class Analyse():
         # return the hex representation of the file hash
         return algorithm.hexdigest()
 
+    def virus_total(self):
+        # get sha256 hash of the sample
+        sample_hash = self.get_file_hash()
+        # use vt api or bs3/selenium/requests lib to perform this
+        # parse data (most likely to use vt api for this)
+        # store useful responses somehow
+        pass
+
     def run(self):
         '''Execution flow starts here'''
         self.arg_parser()
