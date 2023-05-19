@@ -42,9 +42,9 @@ class Analyse():
             case "SHA256":
                 algorithm = hashlib.sha256()
             case "SHA384":
-                algorithm = hashlib.sha256()
+                algorithm = hashlib.sha384()
             case "SHA512":
-                algorithm = hashlib.sha256()
+                algorithm = hashlib.sha512()
 
         # check if the calling function was virus_total
         # virus total only accepts MD5,SHA1 or SHA256 hashes
