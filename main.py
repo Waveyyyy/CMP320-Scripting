@@ -9,7 +9,7 @@ class Analyse():
     def __init__(self):
         pass
 
-    def argParser(self):
+    def arg_parser(self):
         '''Handles argument parsing using the argparse module'''
         parser = argparse.ArgumentParser(
             description="Initial malware triage automation")
@@ -21,7 +21,7 @@ class Analyse():
 
     def run(self):
         '''Execution flow starts here'''
-        self.argParser()
+        self.arg_parser()
 
 
 if __name__ == "__main__":
