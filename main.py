@@ -27,7 +27,9 @@ class Analyse():
 
     def get_file_hash(self):
         '''Retrieves the hash of the sample'''
-        algorithm = hashlib.md5()
+        # by default the algorithm is sha256()
+        algorithm = hashlib.sha256()
+        # choose the algorithm based off of the algorithm argument
         match self.args.algorithm:
             case "MD5":
                 algorithm = hashlib.md5()
