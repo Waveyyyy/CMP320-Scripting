@@ -18,6 +18,8 @@ class Analyse():
         parser.add_argument("sample", help="The file to analyse")
         parser.add_argument("-y", "--yes", action='store_true',
                             help="Answer yes to any y/n prompts")
+        parser.add_argument(
+            "--offline", help="Will not use external services")
         parser.add_argument("-a",
                             "--algorithm", help="Which hash algorithm to use",
                             choices=["MD5", "SHA1", "SHA224",
@@ -46,7 +48,7 @@ class Analyse():
 
         # check if the calling function was virus_total
         # virus total only accepts MD5,SHA1 or SHA256 hashes
-        if "virus_total".equals(inspect.stack()[1].function):
+        if "virus_total" == inspect.stack()[1].function:
             algorithm = hashlib.sha256()
 
         # read the whole sample into data
@@ -66,11 +68,13 @@ class Analyse():
         # use vt api or bs3/selenium/requests lib to perform this
         # parse data (most likely to use vt api for this)
         # store useful responses somehow
-        pass
+        return sample_hash
 
     def run(self):
         '''Execution flow starts here'''
         self.arg_parser()
+        print(f'run: {self.get_file_hash()}')
+        print(f'virus_total: {self.virus_total()}')
 
 
 if __name__ == "__main__":
