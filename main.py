@@ -111,6 +111,10 @@ class Analyse():
                 for tag in json_data["type_tags"]:
                     column_one += (' ' * 2) + tag + '\n'
 
+                # column_two has names of samples submitted with matching hash
+                column_two = '\n\nName(s):\n'
+                for name in json_data["names"]:
+                    column_two += (' ' * 2) + name + '\n'
         print(print_data)
 
     def run(self):
