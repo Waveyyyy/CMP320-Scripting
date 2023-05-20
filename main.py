@@ -6,6 +6,7 @@ import hashlib
 import inspect
 import requests
 import json
+import time
 
 
 class Analyse():
@@ -90,6 +91,27 @@ class Analyse():
                 # title of this section
                 print_data = 'Virus Total'.center(80, "=") + '\n'
                 json_data = json.loads(data)["data"]["attributes"]
+
+                # display the size in megabytes
+                column_one = 'Size = ' + \
+                    str(json_data["size"] / 1_000_000) + 'MB\n'
+
+                # sample creation date
+                column_one += 'Date Created: ' + \
+                    time.ctime(json_data["creation_date"]) + '\n'
+                column_one += 'Date Modified: ' + \
+                    time.ctime(json_data["last_modification_date"]) + '\n'
+                column_one += 'Difference:  ' + \
+                    time.ctime(
+                        json_data["last_modification_date"]
+                        - json_data["creation_date"]) + '\n'
+
+                # format the type tags on separate lines
+                column_one += 'Type(s):\n'
+                for tag in json_data["type_tags"]:
+                    column_one += (' ' * 2) + tag + '\n'
+
+        print(print_data)
 
     def run(self):
         '''Execution flow starts here'''
