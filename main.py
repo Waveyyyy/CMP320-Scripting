@@ -4,6 +4,8 @@ import argparse
 import r2pipe
 import hashlib
 import inspect
+import requests
+import json
 
 
 class Analyse():
@@ -77,6 +79,17 @@ class Analyse():
         # parse data (most likely to use vt api for this)
         # store useful responses somehow
         return sample_hash
+
+    def parsing(self, data):
+        '''Parses data into output formats which match the calling function'''
+        # print_data will contain the formatted output
+        print_data = "Invalid call to parsing"
+        # match based on calling function
+        match inspect.stack()[1].function:
+            case "virus_total":
+                # title of this section
+                print_data = 'Virus Total'.center(80, "=") + '\n'
+                json_data = json.loads(data)["data"]["attributes"]
 
     def run(self):
         '''Execution flow starts here'''
