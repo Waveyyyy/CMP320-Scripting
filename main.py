@@ -130,6 +130,19 @@ class Analyse():
                 for threat_name in threat_class["popular_threat_name"]:
                     column_one += (' ' * 2) + threat_name["value"] + '\n'
 
+                # packers
+                column_one += 'Packers: \n'
+                for detection, packer in json_data["packers"].items():
+                    column_one += (' ' * 2) + f'{detection}: {packer}\n'
+
+                # resource details
+                pe_details = json_data["pe_info"]
+                column_one += 'Resource Details: \n'
+                for resource in pe_details["resource_details"]:
+                    for key, value in resource.items():
+                        column_one += (' ' * 2) + f'{key}: {value}\n'
+                    column_one += '\n'
+
                 # column_two has names of samples submitted with matching hash
                 column_two = 'Name(s):\n'
                 for name in json_data["names"]:
