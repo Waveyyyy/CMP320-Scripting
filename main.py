@@ -77,9 +77,8 @@ class Analyse():
                    'accept': 'application/json'}
         response = requests.get(url, headers=headers)
         file_info = response.text
-        # parse data (most likely to use vt api for this)
-        # store useful responses somehow
-        return sample_hash
+        # parse the response data and output it
+        self.parsing(file_info)
 
     def parsing(self, data):
         '''Parses data into output formats which match the calling function'''
@@ -90,6 +89,9 @@ class Analyse():
             case "virus_total":
                 # title of this section
                 print_data = 'Virus Total'.center(80, "=") + '\n'
+
+                # check if the sample is on virus Total
+                # there is nothing to parse otherwise
                 try:
                     json_data = json.loads(data)["data"]["attributes"]
                 except KeyError:
@@ -106,6 +108,8 @@ class Analyse():
                     time.ctime(json_data["creation_date"]) + '\n'
                 column_one += 'First seen in the wild: ' + \
                     time.ctime(json_data["first_seen_itw_date"]) + '\n'
+
+                # time between creation and first seen in the wild
                 days_since = (json_data["first_seen_itw_date"]
                               - json_data["creation_date"]) / (24 * 60 * 60)
                 years = str(days_since // 365.25)
@@ -153,7 +157,8 @@ class Analyse():
                         column_one += (' ' * 2) + f'{key}: {value}\n'
                     column_one += '\n'
 
-                # column_two has names of samples submitted with matching hash
+                # names of samples submitted with matching hash
+                # in a separte column
                 column_two = 'Name(s):\n'
                 for name in json_data["names"]:
                     column_two += (' ' * 2) + name + '\n'
