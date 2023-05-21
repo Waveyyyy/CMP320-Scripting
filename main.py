@@ -116,6 +116,25 @@ class Analyse():
                 column_two = 'Name(s):\n'
                 for name in json_data["names"]:
                     column_two += (' ' * 2) + name + '\n'
+
+                if (column_one.splitlines().__len__()
+                        < column_two.splitlines().__len__()):
+                    # make number of lines in column_one match that of column_two
+                    for i in range(column_two.splitlines().__len__()
+                                   - column_one.splitlines().__len__()):
+                        column_one += '\n'
+                elif (column_one.splitlines().__len__()
+                      > column_two.splitlines().__len__()):
+                    # make number of lines in column_two match that of column_one
+                    for i in range(column_one.splitlines().__len__()
+                                   - column_two.splitlines().__len__()):
+                        column_two += '\n'
+
+                # longest string in column one, used for formatting columns
+                max_len = max(len(line) for line in column_one.splitlines())
+                for c1, c2 in zip(column_one.splitlines(), column_two.splitlines()):
+                    print_data += f'{c1:{max_len+2}}{c2}\n'
+
         print(print_data)
 
     def run(self):
