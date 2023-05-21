@@ -117,6 +117,19 @@ class Analyse():
                 for info in json_data["signature_info"].values():
                     column_one += (' ' * 2) + f'{info}\n'
 
+                # threat label & category
+                threat_class = json_data["popular_threat_classification"]
+                column_one += 'Threat Label: ' \
+                    + threat_class["suggested_threat_label"] + '\n'
+                column_one += 'Threat Category: \n'
+                for category in threat_class["popular_threat_category"]:
+                    column_one += (' ' * 2) + category["value"] + '\n'
+
+                # threat name(s)
+                column_one += 'Threat Name: \n'
+                for threat_name in threat_class["popular_threat_name"]:
+                    column_one += (' ' * 2) + threat_name["value"] + '\n'
+
                 # column_two has names of samples submitted with matching hash
                 column_two = 'Name(s):\n'
                 for name in json_data["names"]:
