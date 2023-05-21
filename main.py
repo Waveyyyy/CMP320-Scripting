@@ -130,6 +130,11 @@ class Analyse():
                 for threat_name in threat_class["popular_threat_name"]:
                     column_one += (' ' * 2) + threat_name["value"] + '\n'
 
+                # tags
+                column_one += 'Tags: \n'
+                for tag in json_data["tags"]:
+                    column_one += (' ' * 2) + f'{tag}\n'
+
                 # packers
                 column_one += 'Packers: \n'
                 for detection, packer in json_data["packers"].items():
