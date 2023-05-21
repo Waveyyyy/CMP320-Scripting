@@ -101,12 +101,12 @@ class Analyse():
                 column_one = 'Size = ' + \
                     str(json_data["size"] / 1_000_000) + 'MB\n'
 
-                # sample creation date
+                # sample date information
                 column_one += 'Date Created: ' + \
                     time.ctime(json_data["creation_date"]) + '\n'
-                column_one += 'Date Modified: ' + \
-                    time.ctime(json_data["last_modification_date"]) + '\n'
-                days_since = (json_data["last_modification_date"]
+                column_one += 'First seen in the wild: ' + \
+                    time.ctime(json_data["first_seen_itw_date"]) + '\n'
+                days_since = (json_data["first_seen_itw_date"]
                               - json_data["creation_date"]) / (24 * 60 * 60)
                 years = str(days_since // 365.25)
                 days = str(days_since % 365.25)
