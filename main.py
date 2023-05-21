@@ -101,10 +101,11 @@ class Analyse():
                     time.ctime(json_data["creation_date"]) + '\n'
                 column_one += 'Date Modified: ' + \
                     time.ctime(json_data["last_modification_date"]) + '\n'
-                column_one += 'Difference:  ' + \
-                    time.ctime(
-                        json_data["last_modification_date"]
-                        - json_data["creation_date"]) + '\n'
+                days_since = (json_data["last_modification_date"]
+                              - json_data["creation_date"]) / (24 * 60 * 60)
+                years = str(days_since // 365.25)
+                days = str(days_since % 365.25)
+                column_one += f'Difference:  {years} years and {days} days\n'
 
                 # format the type tags on separate lines
                 column_one += 'Type(s):\n'
@@ -112,7 +113,7 @@ class Analyse():
                     column_one += (' ' * 2) + tag + '\n'
 
                 # column_two has names of samples submitted with matching hash
-                column_two = '\n\nName(s):\n'
+                column_two = 'Name(s):\n'
                 for name in json_data["names"]:
                     column_two += (' ' * 2) + name + '\n'
         print(print_data)
