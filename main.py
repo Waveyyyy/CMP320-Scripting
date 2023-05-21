@@ -179,7 +179,8 @@ class Analyse():
 
                 # longest string in column one, used for formatting columns
                 max_len = max(len(line) for line in column_one.splitlines())
-                for c1, c2 in zip(column_one.splitlines(), column_two.splitlines()):
+                for c1, c2 in zip(column_one.splitlines(),
+                                  column_two.splitlines()):
                     print_data += f'{c1:{max_len+2}}{c2}\n'
 
         print(print_data)
