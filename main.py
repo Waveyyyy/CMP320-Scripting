@@ -90,7 +90,12 @@ class Analyse():
             case "virus_total":
                 # title of this section
                 print_data = 'Virus Total'.center(80, "=") + '\n'
-                json_data = json.loads(data)["data"]["attributes"]
+                try:
+                    json_data = json.loads(data)["data"]["attributes"]
+                except KeyError:
+                    print_data += 'No data returend from Virus Total API\n'
+                    print(print_data)
+                    return
 
                 # display the size in megabytes
                 column_one = 'Size = ' + \
