@@ -112,6 +112,11 @@ class Analyse():
                 for tag in json_data["type_tags"]:
                     column_one += (' ' * 2) + tag + '\n'
 
+                # signature information
+                column_one += 'Signature Info:\n'
+                for info in json_data["signature_info"].values():
+                    column_one += (' ' * 2) + f'{info}\n'
+
                 # column_two has names of samples submitted with matching hash
                 column_two = 'Name(s):\n'
                 for name in json_data["names"]:
