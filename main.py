@@ -12,7 +12,7 @@ import time
 class Analyse():
 
     def __init__(self):
-        pass
+        self.r2_obj = None
 
     def arg_parser(self):
         '''Handles argument parsing using the argparse module'''
@@ -82,9 +82,12 @@ class Analyse():
 
     def radare_2(self):
         if self.args.sample:
-            self.args.r2_obj = r2pipe.open(self.args.sample)
-        else:
-            self.args.r2_obj = None
+            self.r2_obj = r2pipe.open(self.args.sample)
+            self.r2_obj.cmd("aaa")
+
+    def strings(self):
+        result = self.r2_obj.cmd('iz')
+        self.parsing(result)
 
     def parsing(self, data):
         '''Parses data into output formats which match the calling function'''
@@ -188,6 +191,19 @@ class Analyse():
                 for c1, c2 in zip(column_one.splitlines(),
                                   column_two.splitlines()):
                     print_data += f'{c1:{max_len+2}}{c2}\n'
+            case "strings":
+                # title of this section
+                print_data = "Strings".center(80, '=') + '\n'
+                string_data = ""
+                for line in data.splitlines()[3:]:
+                    if line.split().__len__() > 8:
+                        string_data += f'{" ".join(line.split()[7:])}\n'
+                    else:
+                        string_data += f'{str(line.split()[7])}\n'
+                string_data = sorted(
+                    string_data.splitlines(), key=len, reverse=True)
+                for line in string_data:
+                    print_data += f'{line}\n'
 
         print(print_data)
 
@@ -196,6 +212,8 @@ class Analyse():
         self.arg_parser()
         if not self.args.offline:
             self.virus_total()
+        self.radare_2()
+        self.strings()
 
 
 if __name__ == "__main__":
