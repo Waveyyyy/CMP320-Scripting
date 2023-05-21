@@ -21,7 +21,7 @@ class Analyse():
         parser.add_argument("sample", help="The file to analyse")
         parser.add_argument("-y", "--yes", action='store_true',
                             help="Answer yes to any y/n prompts")
-        parser.add_argument("--offline",
+        parser.add_argument("--offline", action='store_true',
                             help="Will not use external services")
         parser.add_argument("-a", "--algorithm",
                             help="Which hash algorithm to use",
@@ -188,8 +188,8 @@ class Analyse():
     def run(self):
         '''Execution flow starts here'''
         self.arg_parser()
-        print(f'run: {self.get_file_hash()}')
-        print(f'virus_total: {self.virus_total()}')
+        if not self.args.offline:
+            self.virus_total()
 
 
 if __name__ == "__main__":
