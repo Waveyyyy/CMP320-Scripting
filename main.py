@@ -80,6 +80,12 @@ class Analyse():
         # parse the response data and output it
         self.parsing(file_info)
 
+    def radare_2(self):
+        if self.args.sample:
+            self.args.r2_obj = r2pipe.open(self.args.sample)
+        else:
+            self.args.r2_obj = None
+
     def parsing(self, data):
         '''Parses data into output formats which match the calling function'''
         # print_data will contain the formatted output
