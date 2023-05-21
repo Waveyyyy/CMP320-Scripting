@@ -163,17 +163,18 @@ class Analyse():
                 for name in json_data["names"]:
                     column_two += (' ' * 2) + name + '\n'
 
-                if (column_one.splitlines().__len__()
-                        < column_two.splitlines().__len__()):
-                    # make number of lines in column_one match that of column_two
-                    for i in range(column_two.splitlines().__len__()
-                                   - column_one.splitlines().__len__()):
+                # find the max amount of lines between the columns
+                c1_len = column_one.splitlines().__len__()
+                c2_len = column_two.splitlines().__len__()
+                max_len = max((c1_len, c2_len))
+
+                # make the column with less lines match by
+                # adding newlines
+                if c1_len < max_len:
+                    for i in range(c2_len - c1_len):
                         column_one += '\n'
-                elif (column_one.splitlines().__len__()
-                      > column_two.splitlines().__len__()):
-                    # make number of lines in column_two match that of column_one
-                    for i in range(column_one.splitlines().__len__()
-                                   - column_two.splitlines().__len__()):
+                elif c2_len < max_len:
+                    for i in range(c1_len - c2_len):
                         column_two += '\n'
 
                 # longest string in column one, used for formatting columns
