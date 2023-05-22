@@ -385,6 +385,7 @@ class Analyse():
         self.headers()
         self.imports()
         self.section_information()
+        self.r2_obj.quit()
 
 
 if __name__ == "__main__":
