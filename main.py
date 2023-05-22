@@ -195,11 +195,17 @@ class Analyse():
                 # title of this section
                 print_data = "Strings".center(80, '=') + '\n'
                 string_data = ""
+                # print all lines bar the first 3, they are not related
+                # to the strings of the files
                 for line in data.splitlines()[3:]:
+                    # 7th column contains the string
+                    # anything after is still part of the string and has been
+                    # separated into new columns due to spaces
                     if line.split().__len__() > 8:
                         string_data += f'{" ".join(line.split()[7:])}\n'
                     else:
                         string_data += f'{str(line.split()[7])}\n'
+                # sort lines so the longest ones are at the top
                 string_data = sorted(
                     string_data.splitlines(), key=len, reverse=True)
                 for line in string_data:
