@@ -7,6 +7,8 @@ import inspect
 import requests
 import json
 import time
+import re
+import jsonpickle
 
 
 class Analyse():
@@ -214,6 +216,57 @@ class Analyse():
                     string_data.splitlines(), key=len, reverse=True)
                 for line in string_data:
                     print_data += f'{line}\n'
+            case "headers":
+                # title of this section
+                print_data = "Header Info".center(80, "=") + '\n'
+                # regex which gets the header and the data between it and the
+                # next one
+                matches = re.findall(
+                    r'([A-Z_]+)\n((?:\s{2,}.+\n)+)', data, flags=re.MULTILINE)
+                matches_dict = {}
+                # loop over each match
+                for match in matches:
+                    match_name = match[0]
+                    match_data = match[1].split('\n')
+                    match_data = {}
+                    # loop over the values under each heading
+                    for item in match_data:
+                        pair = item.strip().split(':')
+                        # check if the value pair has more than 2 entries
+                        if len(pair) == 2:
+                            key, value = pair
+                            # construct the new dict with the values under
+                            # the current heading
+                            match_data[key.strip()] = value.strip()
+                        elif len(pair) > 2:
+                            key = pair[0].strip()
+                            value = ':'.join(pair[1:]).strip()
+                            match_data[key] = value
+                        # add the dict to the dict which contains the other
+                        # headings and values
+                        matches_dict[match_name] = match_data
+                # transform the data into json format and load it to be used
+                jdata = json.loads(jsonpickle.encode(matches_dict, indent=4))
+                half_way = len(jdata.keys()) // 2
+                column_one = {}
+                column_two = {}
+                # separate the data "evenly" into two columns
+                for i, (key, value) in enumerate(jdata.items()):
+                    if i < half_way:
+                        column_one[key] = value
+                    else:
+                        column_two[key] = value
+
+                max_len = max((len(key) + len(value))
+                              for key, value in column_one.items())
+                for (key1, value1), (key2, value2) in zip(column_one.items(), column_two.items()):
+                    # print section heading
+                    print_data += f'{key1:{max_len}}{key2}\n'
+                    for (v_key1, v_value1), (v_key2, v_value2) in zip(value1.items(), value2.items()):
+                        # print the values of each section
+                        print_data += f'{v_key1}: {v_value1:{max_len}}{v_key2}: {v_value2:{max_len}}\n'
+                    # end with another newline for ease of reading
+                    print_data += '\n'
 
         print(print_data)
 
