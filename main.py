@@ -321,10 +321,11 @@ class Analyse():
 
                 max_len = max((len(key) + len(value))
                               for key, value in column_one.items())
-                for (dll_1, functions_1), (dll_2, functions_2) in zip(column_one.items(), column_two.items()):
-                    print_data += f'{dll_1:{max_len}}  {dll_2}\n'
-                    for functions_1, functions_2 in zip(functions_1, functions_2):
-                        print_data += f'  {functions_1:{max_len}}  {functions_2}\n'
+                # add the data from each column into print_data to be printed
+                for (key_1, value_1), (key_2, value_2) in itertools.zip_longest(column_one.items(), column_two.items(), fillvalue=('', '')):
+                    print_data += f'{key_1:{max_len+2}}{key_2}\n'
+                    for i, j in itertools.zip_longest(value_1, value_2, fillvalue=''):
+                        print_data += f'  {i:{max_len+2}}{j}\n'
                     print_data += '\n'
 
         print(print_data)
