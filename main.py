@@ -100,6 +100,10 @@ class Analyse():
         result = self.r2_obj.cmd('ii')
         self.parsing(result)
 
+    def section_information(self):
+        result = self.r2_obj.cmdj("iSj entropy")
+        self.parsing(result)
+
     def parsing(self, data):
         '''Parses data into output formats which match the calling function'''
         # print_data will contain the formatted output
@@ -347,6 +351,27 @@ class Analyse():
                                 # print the function and reason why its been
                                 # detected as malicious
                                 print_data += f'{im}\tReason: {key}\n'
+            case "section_information":
+                # title of this section
+                print_data = "Section Information".center(80, "=") + '\n'
+                sections = {}
+                section_name = ''
+                for section in data['sections']:
+                    for key, value in section.items():
+                        if key == 'name':
+                            section_name = value
+                            sections[value] = []
+                        else:
+                            sections[section_name].append((key, value))
+                half_way = sections.items().__len__() // 2
+                column_one = dict(list(sections.items())[half_way:])
+                column_two = dict(list(sections.items())[:half_way])
+                col1_values = column_one.values()
+                for key, value in itertools.zip_longest(sections.keys(), sections.values(), fillvalue=''):
+                    print_data += f'{key}\n'
+                    for item in value:
+                        print_data += f'  {item[0]}: {item[1]}\n'
+                    print_data += '\n'
 
         print(print_data)
 
@@ -359,6 +384,7 @@ class Analyse():
         self.strings()
         self.headers()
         self.imports()
+        self.section_information()
 
 
 if __name__ == "__main__":
