@@ -327,6 +327,26 @@ class Analyse():
                     for import_1, import_2 in itertools.zip_longest(value_1, value_2, fillvalue=''):
                         print_data += f'  {import_1:{max_len+2}}{import_2}\n'
                     print_data += '\n'
+                # title of the next section
+                print_data += "Malicious Imports".center(80, "=") + '\n'
+                # read list of malicious apis from json file
+                with open('malapi.json', 'r') as malicious_apis:
+                    file_data = malicious_apis.read()
+                # load it as json for parsing
+                json_malapis = json.loads(file_data)
+                # iterate over keys and value in the json
+                for key, values in json_malapis["Categories"].items():
+                    # loop over each of the imports lists in the dictionary from
+                    # above
+                    for imports in import_dict.values():
+                        # loop over each import
+                        for im in imports:
+                            # check if the import is in the malicious api
+                            # json file
+                            if im in values:
+                                # print the function and reason why its been
+                                # detected as malicious
+                                print_data += f'{im}\tReason: {key}\n'
 
         print(print_data)
 
