@@ -96,6 +96,10 @@ class Analyse():
         result = self.r2_obj.cmd('iH')
         self.parsing(result)
 
+    def imports(self):
+        result = self.r2_obj.cmd('ii')
+        self.parsing(result)
+
     def parsing(self, data):
         '''Parses data into output formats which match the calling function'''
         # print_data will contain the formatted output
