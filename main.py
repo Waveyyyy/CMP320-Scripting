@@ -89,6 +89,10 @@ class Analyse():
         result = self.r2_obj.cmd('iz')
         self.parsing(result)
 
+    def headers(self):
+        result = self.r2_obj.cmd('iH')
+        self.parsing(result)
+
     def parsing(self, data):
         '''Parses data into output formats which match the calling function'''
         # print_data will contain the formatted output
