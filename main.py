@@ -9,6 +9,7 @@ import json
 import time
 import re
 import jsonpickle
+import itertools
 
 
 class Analyse():
@@ -115,87 +116,102 @@ class Analyse():
                     return
 
                 # display the size in megabytes
-                column_one = 'Size = ' + \
-                    str(json_data["size"] / 1_000_000) + 'MB\n'
+                try:
+                    column_one = 'Size = ' + \
+                        str(json_data["size"] / 1_000_000) + 'MB\n'
+                except KeyError:
+                    pass
 
                 # sample date information
-                column_one += 'Date Created: ' + \
-                    time.ctime(json_data["creation_date"]) + '\n'
-                column_one += 'First seen in the wild: ' + \
-                    time.ctime(json_data["first_seen_itw_date"]) + '\n'
-
-                # time between creation and first seen in the wild
-                days_since = (json_data["first_seen_itw_date"]
-                              - json_data["creation_date"]) / (24 * 60 * 60)
-                years = str(days_since // 365.25)
-                days = str(days_since % 365.25)
-                column_one += f'Difference:  {years} years and {days} days\n'
+                try:
+                    column_one += 'Date Created: ' + \
+                        time.ctime(json_data["creation_date"]) + '\n'
+                    column_one += 'First seen in the wild: ' + \
+                        time.ctime(json_data["first_seen_itw_date"]) + '\n'
+                    # time between creation and first seen in the wild
+                    days_since = (json_data["first_seen_itw_date"]
+                                  - json_data["creation_date"]) / (24 * 60 * 60)
+                    years = str(days_since // 365.25)
+                    days = str(days_since % 365.25)
+                    column_one += f'Difference:  {years} years and {days} days\n'
+                except KeyError:
+                    pass
 
                 # format the type tags on separate lines
-                column_one += 'Type(s):\n'
-                for tag in json_data["type_tags"]:
-                    column_one += (' ' * 2) + tag + '\n'
+                try:
+                    column_one += 'Type(s):\n'
+                    for tag in json_data["type_tags"]:
+                        column_one += (' ' * 2) + tag + '\n'
+                except KeyError:
+                    pass
 
                 # signature information
-                column_one += 'Signature Info:\n'
-                for info in json_data["signature_info"].values():
-                    column_one += (' ' * 2) + f'{info}\n'
+                try:
+                    column_one += 'Signature Info:\n'
+                    for info in json_data["signature_info"].values():
+                        column_one += (' ' * 2) + f'{info}\n'
+                except KeyError:
+                    pass
 
                 # threat label & category
-                threat_class = json_data["popular_threat_classification"]
-                column_one += 'Threat Label: ' \
-                    + threat_class["suggested_threat_label"] + '\n'
-                column_one += 'Threat Category: \n'
-                for category in threat_class["popular_threat_category"]:
-                    column_one += (' ' * 2) + category["value"] + '\n'
+                try:
+                    threat_class = json_data["popular_threat_classification"]
+                    column_one += 'Threat Label: ' \
+                        + threat_class["suggested_threat_label"] + '\n'
+                    column_one += 'Threat Category: \n'
+                    for category in threat_class["popular_threat_category"]:
+                        column_one += (' ' * 2) + category["value"] + '\n'
+                except KeyError:
+                    pass
 
                 # threat name(s)
-                column_one += 'Threat Name: \n'
-                for threat_name in threat_class["popular_threat_name"]:
-                    column_one += (' ' * 2) + threat_name["value"] + '\n'
+                try:
+                    column_one += 'Threat Name: \n'
+                    for threat_name in threat_class["popular_threat_name"]:
+                        column_one += (' ' * 2) + threat_name["value"] + '\n'
+                except KeyError:
+                    pass
 
                 # tags
-                column_one += 'Tags: \n'
-                for tag in json_data["tags"]:
-                    column_one += (' ' * 2) + f'{tag}\n'
+                try:
+                    column_one += 'Tags: \n'
+                    for tag in json_data["tags"]:
+                        column_one += (' ' * 2) + f'{tag}\n'
+                except KeyError:
+                    pass
 
                 # packers
-                column_one += 'Packers: \n'
-                for detection, packer in json_data["packers"].items():
-                    column_one += (' ' * 2) + f'{detection}: {packer}\n'
+                try:
+                    column_one += 'Packers: \n'
+                    for detection, packer in json_data["packers"].items():
+                        column_one += (' ' * 2) + f'{detection}: {packer}\n'
+                except KeyError:
+                    pass
 
                 # resource details
-                pe_details = json_data["pe_info"]
-                column_one += 'Resource Details: \n'
-                for resource in pe_details["resource_details"]:
-                    for key, value in resource.items():
-                        column_one += (' ' * 2) + f'{key}: {value}\n'
-                    column_one += '\n'
+                try:
+                    pe_details = json_data["pe_info"]
+                    column_one += 'Resource Details: \n'
+                    for resource in pe_details["resource_details"]:
+                        for key, value in resource.items():
+                            column_one += (' ' * 2) + f'{key}: {value}\n'
+                        column_one += '\n'
+                except KeyError:
+                    pass
 
                 # names of samples submitted with matching hash
                 # in a separte column
-                column_two = 'Name(s):\n'
-                for name in json_data["names"]:
-                    column_two += (' ' * 2) + name + '\n'
-
-                # find the max amount of lines between the columns
-                c1_len = column_one.splitlines().__len__()
-                c2_len = column_two.splitlines().__len__()
-                max_len = max((c1_len, c2_len))
-
-                # make the column with less lines match by
-                # adding newlines
-                if c1_len < max_len:
-                    for i in range(c2_len - c1_len):
-                        column_one += '\n'
-                elif c2_len < max_len:
-                    for i in range(c1_len - c2_len):
-                        column_two += '\n'
+                try:
+                    column_two = 'Name(s):\n'
+                    for name in json_data["names"]:
+                        column_two += (' ' * 2) + name + '\n'
+                except KeyError:
+                    pass
 
                 # longest string in column one, used for formatting columns
                 max_len = max(len(line) for line in column_one.splitlines())
-                for c1, c2 in zip(column_one.splitlines(),
-                                  column_two.splitlines()):
+                for c1, c2 in itertools.zip_longest(column_one.splitlines(),
+                                                    column_two.splitlines(), fillvalue=''):
                     print_data += f'{c1:{max_len+2}}{c2}\n'
             case "strings":
                 # title of this section
@@ -264,7 +280,12 @@ class Analyse():
                     print_data += f'{key1:{max_len}}{key2}\n'
                     for (v_key1, v_value1), (v_key2, v_value2) in zip(value1.items(), value2.items()):
                         # print the values of each section
-                        print_data += f'{v_key1}: {v_value1:{max_len}}{v_key2}: {v_value2:{max_len}}\n'
+                        if not (v_key1 and v_value1):
+                            print_data += f'{v_key1}{v_value1:{max_len}}{v_key2}: {v_value2}\n'
+                        elif not (v_key2 and v_value2):
+                            print_data += f'{v_key1}: {v_value1:{max_len}}{v_key2}{v_value2}\n'
+                        else:
+                            print_data += f'{v_key1}: {v_value1:{max_len}}{v_key2}: {v_value2}\n'
                     # end with another newline for ease of reading
                     print_data += '\n'
 
