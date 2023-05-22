@@ -356,17 +356,18 @@ class Analyse():
                 print_data = "Section Information".center(80, "=") + '\n'
                 sections = {}
                 section_name = ''
+                # set up section data structure for easy formatting
                 for section in data['sections']:
                     for key, value in section.items():
+                        # set the main key for each section information
+                        # as the name of the section
                         if key == 'name':
                             section_name = value
                             sections[value] = []
                         else:
                             sections[section_name].append((key, value))
-                half_way = sections.items().__len__() // 2
-                column_one = dict(list(sections.items())[half_way:])
-                column_two = dict(list(sections.items())[:half_way])
-                col1_values = column_one.values()
+                # loop through the section keys and values formatting the output
+                # sequentially with a newline between each section
                 for key, value in itertools.zip_longest(sections.keys(), sections.values(), fillvalue=''):
                     print_data += f'{key}\n'
                     for item in value:
