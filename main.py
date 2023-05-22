@@ -228,7 +228,7 @@ class Analyse():
                 for match in matches:
                     match_name = match[0]
                     match_data = match[1].split('\n')
-                    match_data = {}
+                    match_dict = {}
                     # loop over the values under each heading
                     for item in match_data:
                         pair = item.strip().split(':')
@@ -237,14 +237,14 @@ class Analyse():
                             key, value = pair
                             # construct the new dict with the values under
                             # the current heading
-                            match_data[key.strip()] = value.strip()
+                            match_dict[key.strip()] = value.strip()
                         elif len(pair) > 2:
                             key = pair[0].strip()
                             value = ':'.join(pair[1:]).strip()
-                            match_data[key] = value
+                            match_dict[key] = value
                         # add the dict to the dict which contains the other
                         # headings and values
-                        matches_dict[match_name] = match_data
+                        matches_dict[match_name] = match_dict
                 # transform the data into json format and load it to be used
                 jdata = json.loads(jsonpickle.encode(matches_dict, indent=4))
                 half_way = len(jdata.keys()) // 2
@@ -277,6 +277,7 @@ class Analyse():
             self.virus_total()
         self.radare_2()
         self.strings()
+        self.headers()
 
 
 if __name__ == "__main__":
