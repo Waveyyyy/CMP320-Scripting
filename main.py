@@ -292,6 +292,40 @@ class Analyse():
                             print_data += f'{v_key1}: {v_value1:{max_len}}{v_key2}: {v_value2}\n'
                     # end with another newline for ease of reading
                     print_data += '\n'
+            case "imports":
+                # title of this section
+                print_data = "Function Imports".center(80, "=") + '\n'
+                # get a list containing a list with the dll and the function
+                imports = [line.strip().split()[4:]
+                           for line in data.strip().splitlines()[3:]]
+                import_dict = {}
+                # loop over the dll and function list in the imports list
+                for pair in imports:
+                    dll = pair[0]
+                    function = pair[1]
+                    # add unique dlls to the import_dict
+                    if dll not in import_dict:
+                        import_dict[dll] = []
+                    # add functions to their related dll key
+                    import_dict[dll].append(function)
+
+                half_way = len(import_dict.keys()) // 2
+                column_one = {}
+                column_two = {}
+                # split import_dict into two columns
+                for i, (key, value) in enumerate(import_dict.items()):
+                    if i < half_way:
+                        column_one[key] = value
+                    else:
+                        column_two[key] = value
+
+                max_len = max((len(key) + len(value))
+                              for key, value in column_one.items())
+                for (dll_1, functions_1), (dll_2, functions_2) in zip(column_one.items(), column_two.items()):
+                    print_data += f'{dll_1:{max_len}}  {dll_2}\n'
+                    for functions_1, functions_2 in zip(functions_1, functions_2):
+                        print_data += f'  {functions_1:{max_len}}  {functions_2}\n'
+                    print_data += '\n'
 
         print(print_data)
 
