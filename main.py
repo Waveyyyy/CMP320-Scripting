@@ -286,7 +286,7 @@ class Analyse():
                 for (key1, value1), (key2, value2) in zip(column_one.items(), column_two.items()):
                     # print section heading
                     print_data += f'{key1:{max_len}}{key2}\n'
-                    for (v_key1, v_value1), (v_key2, v_value2) in zip(value1.items(), value2.items()):
+                    for (v_key1, v_value1), (v_key2, v_value2) in itertools.zip_longest(value1.items(), value2.items(), fillvalue=('', '')):
                         # print the values of each section
                         if not (v_key1 and v_value1):
                             print_data += f'{v_key1}{v_value1:{max_len}}{v_key2}: {v_value2}\n'
