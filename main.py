@@ -338,6 +338,7 @@ class Analyse():
         self.radare_2()
         self.strings()
         self.headers()
+        self.imports()
 
 
 if __name__ == "__main__":
