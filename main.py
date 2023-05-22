@@ -324,8 +324,8 @@ class Analyse():
                 # add the data from each column into print_data to be printed
                 for (key_1, value_1), (key_2, value_2) in itertools.zip_longest(column_one.items(), column_two.items(), fillvalue=('', '')):
                     print_data += f'{key_1:{max_len+2}}{key_2}\n'
-                    for i, j in itertools.zip_longest(value_1, value_2, fillvalue=''):
-                        print_data += f'  {i:{max_len+2}}{j}\n'
+                    for import_1, import_2 in itertools.zip_longest(value_1, value_2, fillvalue=''):
+                        print_data += f'  {import_1:{max_len+2}}{import_2}\n'
                     print_data += '\n'
 
         print(print_data)
