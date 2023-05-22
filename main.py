@@ -122,7 +122,7 @@ class Analyse():
                 # display the size in megabytes
                 try:
                     column_one = 'Size = ' + \
-                        str(json_data["size"] / 1_000_000) + 'MB\n'
+                        str(json_data["size"] / 1_000) + 'KB\n'
                 except KeyError:
                     pass
 
