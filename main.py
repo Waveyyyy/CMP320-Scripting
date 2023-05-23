@@ -22,8 +22,6 @@ class Analyse():
         parser = argparse.ArgumentParser(
             description="Initial malware triage automation")
         parser.add_argument("sample", help="The file to analyse")
-        parser.add_argument("-y", "--yes", action='store_true',
-                            help="Answer yes to any y/n prompts")
         parser.add_argument("--offline", action='store_true',
                             help="Will not use external services")
         parser.add_argument("-a", "--algorithm",
@@ -379,6 +377,7 @@ class Analyse():
     def run(self):
         '''Execution flow starts here'''
         self.arg_parser()
+        print(self.get_file_hash))
         if not self.args.offline:
             self.virus_total()
         self.radare_2()
