@@ -80,6 +80,7 @@ class Analyse():
         file_info = response.text
         # parse the response data and output it
         self.parsing(file_info)
+        return file_info
 
     def radare_2(self):
         if self.args.sample:
@@ -89,18 +90,22 @@ class Analyse():
     def strings(self):
         result = self.r2_obj.cmd('iz')
         self.parsing(result)
+        return result
 
     def headers(self):
         result = self.r2_obj.cmd('iH')
         self.parsing(result)
+        return result
 
     def imports(self):
         result = self.r2_obj.cmd('ii')
         self.parsing(result)
+        return result
 
     def section_information(self):
         result = self.r2_obj.cmdj("iSj entropy")
         self.parsing(result)
+        return result
 
     def parsing(self, data):
         '''Parses data into output formats which match the calling function'''
